@@ -23,8 +23,8 @@ type Recipient interface {
 	Update(*Blood) error
 }
 
-// Defibrillator filters blood
-type Defibrillator interface {
+// Doctor filters blood
+type Doctor interface {
 	Diagnose(*Blood) error
 }
 
