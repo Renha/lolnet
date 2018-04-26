@@ -23,6 +23,11 @@ type Recipient interface {
 	Update(*Blood) error
 }
 
+// Defibrillator filters blood
+type Defibrillator interface {
+	Diagnose(*Blood) error
+}
+
 func (bl Blood) String() string {
 	return fmt.Sprintf("subnets:\t%d\nips:\t\t%d\n", len(bl.Nets), len(bl.IPs))
 }
