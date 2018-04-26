@@ -17,6 +17,7 @@ func NewDoctor() doctor {
 }
 
 func (doctor) Diagnose(blood *lolnet.Blood) error {
+	// Dedupe
 	keys := make(map[string]struct{})
 
 	IPList := []net.IP{}
@@ -36,5 +37,6 @@ func (doctor) Diagnose(blood *lolnet.Blood) error {
 			netList = append(netList, nentry)
 		}
 	}
+	blood.Nets = netList
 	return nil
 }
