@@ -1,4 +1,4 @@
-package githubdonor
+package webdonor
 
 import (
 	"errors"

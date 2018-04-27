@@ -1,7 +1,7 @@
 package lolout
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/lexfrei/lolnet"
 )
@@ -11,6 +11,7 @@ var _ lolnet.Recipient = &lolout{}
 type lolout struct {
 }
 
+// Newlolout provides new recipient object
 func Newlolout() lolout {
 	return struct{}{}
 }
@@ -20,12 +21,12 @@ func (lolout) Remove() error {
 }
 
 func (lolout) Add(bl *lolnet.Blood) error {
-	log.Println(bl.String())
+	fmt.Println(bl.String())
 	return nil
 }
 
 func (l lolout) Update(bl *lolnet.Blood) error {
 	l.Remove()
-	log.Println(bl.String())
+	fmt.Println(bl.String())
 	return nil
 }

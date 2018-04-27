@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/lexfrei/lolnet/doctor"
-	"github.com/lexfrei/lolnet/donor"
-	"github.com/lexfrei/lolnet/recipient"
+	"github.com/lexfrei/lolnet/donor/web"
+	"github.com/lexfrei/lolnet/recipient/stdout"
 )
 
 func isOk(err error) {
@@ -15,7 +15,7 @@ func isOk(err error) {
 }
 
 func main() {
-	donor := githubdonor.NewGitHubDonor(http.Client{})
+	donor := webdonor.NewGitHubDonor(http.Client{})
 	blood, err := donor.Get()
 	isOk(err)
 	doc := doctor.NewDoctor()
