@@ -11,12 +11,9 @@ type Blood struct {
 	IPs  []net.IP
 }
 
-// RawBlood conaints a raw string with ips and subnets
-type RawBlood string
-
 // Donor provides list provider
 type Donor interface {
-	Get() (*RawBlood, error)
+	Get() (*string, error)
 }
 
 // Recipient implements reciver funcs
@@ -28,13 +25,9 @@ type Recipient interface {
 
 // Doctor filters blood
 type Doctor interface {
-	Diagnose(*RawBlood) (*Blood, error)
+	Diagnose(*string) (*Blood, error)
 }
 
-func (bl Blood) String() string {
-	return fmt.Sprintf("subnets: %d; ips: %d", len(bl.Nets), len(bl.IPs))
-}
-
-func (rb RawBlood) String() {
-	fmt.Sprintf("%s", rb)
+func (blood Blood) String() string {
+	return fmt.Sprintf("subnets: %d; ips: %d", len(blood.Nets), len(blood.IPs))
 }
