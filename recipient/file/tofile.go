@@ -35,7 +35,7 @@ func (tf tofile) Add(bl *lolnet.Blood) error {
 		out += fmt.Sprintf("%s\n", i)
 	}
 	for _, o := range bl.Nets {
-		out += fmt.Sprintf("%s\n", o)
+		out += fmt.Sprintf("%s\n", o.String())
 	}
 	_, err = f.Write([]byte(out))
 	if err != nil {
