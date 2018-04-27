@@ -34,3 +34,7 @@ type Doctor interface {
 func (bl Blood) String() string {
 	return fmt.Sprintf("subnets: %d; ips: %d", len(bl.Nets), len(bl.IPs))
 }
+
+func (rb RawBlood) String() {
+	fmt.Sprintf("%s", rb)
+}
