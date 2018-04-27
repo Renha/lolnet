@@ -5,25 +5,31 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"net/url"
 
 	"github.com/lexfrei/lolnet"
 )
 
-var _ lolnet.Donor = &githubDonor{}
+var _ lolnet.Donor = &webDonor{}
 
-type githubDonor struct {
-	cleint http.Client
+type webDonor struct {
+	client http.Client
+	url    url.URL
 }
 
 type ips []net.IP
 
-// NewGitHubDonor gives you github donor object
-func NewGitHubDonor(c http.Client) githubDonor {
-	return githubDonor{c}
+// NewWebDonor gives you github donor object
+func NewWebDonor(c http.Client, rawURL string) (*webDonor, error) {
+	validURL, err := url.Parse(rawURL)
+	if err != nil {
+		return nil, err
+	}
+	return &webDonor{client: c, url: *validURL}, nil
 }
 
-func (githubDonor) Get() (*string, error) {
-	resp, err := http.Get("https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv")
+func (wd webDonor) Get() (*string, error) {
+	resp, err := wd.client.Get(wd.url.String())
 	if err != nil {
 		return nil, err
 	}
