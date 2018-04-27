@@ -6,4 +6,6 @@ WORKDIR /go/src/github.com/lexfrei/lolnet/cmd/
 RUN go get ./
 RUN go build -o lolnet
 
+FROM alpine
+
 CMD ["./lolnet"]
