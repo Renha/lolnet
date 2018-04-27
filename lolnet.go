@@ -11,9 +11,12 @@ type Blood struct {
 	IPs  []net.IP
 }
 
+// RawBlood conaints a raw string with ips and subnets
+type RawBlood string
+
 // Donor provides list provider
 type Donor interface {
-	Get() (*Blood, error)
+	Get() (*RawBlood, error)
 }
 
 // Recipient implements reciver funcs
@@ -25,7 +28,7 @@ type Recipient interface {
 
 // Doctor filters blood
 type Doctor interface {
-	Diagnose(*Blood) error
+	Diagnose(*RawBlood) (*Blood, error)
 }
 
 func (bl Blood) String() string {
