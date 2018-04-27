@@ -19,7 +19,8 @@ func main() {
 	blood, err := donor.Get()
 	isOk(err)
 	doc := doctor.NewDoctor()
-	isOk(doc.Diagnose(blood))
+	cleanBlood, err := doc.Diagnose(blood)
+	isOk(err)
 	recipient := lolout.Newlolout()
-	isOk(recipient.Add(blood))
+	isOk(recipient.Add(cleanBlood))
 }
