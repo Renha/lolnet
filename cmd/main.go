@@ -15,12 +15,14 @@ func isOk(err error) {
 }
 
 func main() {
-	donor := webdonor.NewGitHubDonor(http.Client{})
+	donor, err := webdonor.NewWebDonor(http.Client{},
+		"https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv")
+	isOk(err)
 	blood, err := donor.Get()
 	isOk(err)
 	doc := doctor.NewDoctor()
 	cleanBlood, err := doc.Diagnose(blood)
 	isOk(err)
-	recipient := lolout.Newlolout()
+	recipient := lolout.NewStdOut(true)
 	isOk(recipient.Add(cleanBlood))
 }
