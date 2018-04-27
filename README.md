@@ -1,4 +1,7 @@
 # LOLNET [WIP]
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flexfrei%2Flolnet.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flexfrei%2Flolnet?ref=badge_shield)
+
 ЛОЛ, нет. Программа для реорганизации и форматирования строк.
 
 #### Usage
