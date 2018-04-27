@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
-	"regexp"
 
 	"github.com/lexfrei/lolnet"
 )
@@ -16,27 +15,14 @@ type githubDonor struct {
 	cleint http.Client
 }
 
-var reNet = regexp.MustCompile(`(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\/\d+)`)
-var reIP = regexp.MustCompile(`(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)`)
-
 type ips []net.IP
-type nets []net.IPNet
-
-func (nets nets) isIPInNets(ip net.IP) bool {
-	for _, i := range nets {
-		if i.Contains(ip) {
-			return true
-		}
-	}
-	return false
-}
 
 // NewGitHubDonor gives you github donor object
 func NewGitHubDonor(c http.Client) githubDonor {
 	return githubDonor{c}
 }
 
-func (githubDonor) Get() (*lolnet.Blood, error) {
+func (githubDonor) Get() (*string, error) {
 	resp, err := http.Get("https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv")
 	if err != nil {
 		return nil, err
@@ -52,34 +38,5 @@ func (githubDonor) Get() (*lolnet.Blood, error) {
 	}
 	bodyString := string(bodyBytes)
 
-	rawNets := reNet.FindAllString(bodyString, -1)
-	rawIPs := reIP.FindAllString(bodyString, -1)
-
-	var networks nets
-	var ipaddresses ips
-
-	for _, i := range rawNets {
-		address, network, err := net.ParseCIDR(i)
-		if err != nil {
-			return nil, err
-		}
-		if networks.isIPInNets(address) {
-			continue
-		} else {
-			networks = append(networks, *network)
-		}
-	}
-
-	for _, i := range rawIPs {
-		ipaddress := net.ParseIP(i)
-		if networks.isIPInNets(ipaddress) {
-			continue
-		} else {
-			ipaddresses = append(ipaddresses, ipaddress)
-		}
-	}
-	return &lolnet.Blood{
-		IPs:  ipaddresses,
-		Nets: networks,
-	}, nil
+	return &bodyString, nil
 }
