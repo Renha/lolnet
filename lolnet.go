@@ -13,7 +13,7 @@ type Blood struct {
 
 // Donor provides list provider
 type Donor interface {
-	Get() (*Blood, error)
+	Get() (*string, error)
 }
 
 // Recipient implements reciver funcs
@@ -23,6 +23,11 @@ type Recipient interface {
 	Update(*Blood) error
 }
 
-func (bl Blood) String() string {
-	return fmt.Sprintf("subnets:\t%d\nips:\t\t%d\n", len(bl.Nets), len(bl.IPs))
+// Doctor filters blood
+type Doctor interface {
+	Diagnose(*string) (*Blood, error)
+}
+
+func (blood Blood) String() string {
+	return fmt.Sprintf("subnets: %d; ips: %d", len(blood.Nets), len(blood.IPs))
 }

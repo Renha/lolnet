@@ -24,7 +24,8 @@ func (lolout) Add(bl *lolnet.Blood) error {
 	return nil
 }
 
-func (lolout) Update(bl *lolnet.Blood) error {
+func (l lolout) Update(bl *lolnet.Blood) error {
+	l.Remove()
 	log.Println(bl.String())
 	return nil
 }
