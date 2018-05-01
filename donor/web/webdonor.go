@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/kelseyhightower/envconfig"
 	"github.com/lexfrei/lolnet"
 )
 
@@ -19,13 +20,22 @@ type webDonor struct {
 
 type ips []net.IP
 
+type config struct {
+	webLink string `required:"true"`
+}
+
 // NewWebDonor gives you github donor object
-func NewWebDonor(c http.Client, rawURL string) (*webDonor, error) {
-	validURL, err := url.Parse(rawURL)
+func NewWebDonor(c http.Client) (*webDonor, error) {
+	var wconf config
+	err := envconfig.Process("lolnet", &wconf)
 	if err != nil {
 		return nil, err
 	}
-	return &webDonor{client: c, url: *validURL}, nil
+	link, err := url.Parse(wconf.webLink)
+	if err != nil {
+		return nil, err
+	}
+	return &webDonor{client: c, url: *link}, nil
 }
 
 func (wd webDonor) Get() (*string, error) {
