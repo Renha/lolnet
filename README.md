@@ -5,11 +5,12 @@
 [![GitHub issues](https://img.shields.io/github/issues/lexfrei/lolnet.svg)](https://github.com/lexfrei/lolnet/issues)
 [![GitHub license](https://img.shields.io/github/license/lexfrei/lolnet.svg)](https://github.com/lexfrei/lolnet/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flexfrei%2Flolnet.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flexfrei%2Flolnet?ref=badge_shield)
+[![Docker Automated build](https://img.shields.io/docker/automated/lexfrei/lolnet.svg)](https://hub.docker.com/r/lexfrei/lolnet/)
 
 ЛОЛ, нет. Программа для реорганизации и форматирования строк.
 
 #### Usage
-`lolnet --DONOR [OPTION...] --RECIPIENT [OPTION...]`
+`TBA`
 
 #### Архитектура
 Данная программа содержит в себе 3 компонента: донора, доктора и реципиента.
