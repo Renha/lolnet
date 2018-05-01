@@ -3,9 +3,11 @@ FROM golang
 COPY ./ /go/src/github.com/lexfrei/lolnet/
 WORKDIR /go/src/github.com/lexfrei/lolnet/cmd/
 
-RUN go get ./
-RUN go build -o lolnet
+RUN go get ./ && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o lolnet
 
-FROM alpine
+FROM alpine:latest
 
-CMD ["./lolnet"]
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+
+COPY --from=0 /go/src/github.com/lexfrei/lolnet/cmd/lolnet /
+ENTRYPOINT ["/lolnet"]
