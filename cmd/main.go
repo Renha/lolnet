@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 
+	"github.com/kelseyhightower/envconfig"
+	"github.com/lexfrei/lolnet"
 	"github.com/lexfrei/lolnet/doctor"
 	"github.com/lexfrei/lolnet/donor/web"
 	"github.com/lexfrei/lolnet/recipient/stdout"
@@ -14,9 +16,16 @@ func isOk(err error) {
 	}
 }
 
+type config struct {
+	Donor     string `required:"true"`
+	Recipient string `required:"true"`
+}
+
 func main() {
-	donor, err := webdonor.NewWebDonor(http.Client{},
-		"https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv")
+	var conf config
+	var donor lolnet.Donor
+	isOk(envconfig.Process("lolnet", &conf))
+	donor, err := webdonor.NewWebDonor(http.Client{})
 	isOk(err)
 	blood, err := donor.Get()
 	isOk(err)
