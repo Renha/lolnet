@@ -3,6 +3,7 @@ package doctor
 import (
 	"net"
 	"regexp"
+	"sort"
 
 	"github.com/lexfrei/lolnet"
 )
@@ -47,8 +48,30 @@ func unique(stringSlice []string) []string {
 	return list
 }
 
+type IPs []net.IP
+
+func (ips IPs) Len() int {
+	return len(ips)
+}
+
+func (ips IPs) Swap(i, j int) {
+	ips[i], ips[j] = ips[j], ips[i]
+}
+
+func (ips IPs) Less(i, j int) bool {
+	if len(ips[i]) != len(ips[j]) {
+		return len(ips[i]) < len(ips[j])
+	}
+	for octNum := 0; octNum < len(ips[i]); octNum++ {
+		if ips[i][octNum] != ips[j][octNum] {
+			return ips[i][octNum] < ips[j][octNum]
+		}
+	}
+	return false
+}
+
 func (doctor) Diagnose(blood *string) (*lolnet.Blood, error) {
-	var cleanIPs []net.IP
+	var cleanIPs IPs
 	rawNets := unique(reNet.FindAllString(*blood, -1))
 
 	var networks nets
@@ -72,6 +95,8 @@ func (doctor) Diagnose(blood *string) (*lolnet.Blood, error) {
 			cleanIPs = append(cleanIPs, ipaddress)
 		}
 	}
+
+	sort.Sort(cleanIPs)
 
 	return &lolnet.Blood{
 		IPs:  cleanIPs,
