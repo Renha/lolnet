@@ -30,6 +30,32 @@ func (nets nets) isIPInNets(ip net.IP) bool {
 	return false
 }
 
+func (nets nets) Len() int {
+	return len(nets)
+}
+
+func (nets nets) Swap(i, j int) {
+	nets[i], nets[j] = nets[j], nets[i]
+}
+
+func (nets nets) Less(i, j int) bool {
+	if len(nets[i].Mask) != len(nets[j].Mask) {
+		return len(nets[i].Mask) < len(nets[j].Mask)
+	} else {
+		for octNum := 0; octNum < len(nets[i].Mask); octNum++ {
+			if nets[i].Mask[octNum] != nets[j].Mask[octNum] {
+				return nets[i].Mask[octNum] < nets[j].Mask[octNum]
+			}
+		}
+		for octNum := 0; octNum < len(nets[i].IP); octNum++ {
+			if nets[i].IP[octNum] != nets[j].IP[octNum] {
+				return nets[i].IP[octNum] < nets[j].IP[octNum]
+			}
+		}
+	}
+	return false
+}
+
 // NewDoctor gives you doctor object
 func NewDoctor() doctor {
 	return doctor{}
@@ -97,6 +123,7 @@ func (doctor) Diagnose(blood *string) (*lolnet.Blood, error) {
 	}
 
 	sort.Sort(cleanIPs)
+	sort.Sort(networks)
 
 	return &lolnet.Blood{
 		IPs:  cleanIPs,
