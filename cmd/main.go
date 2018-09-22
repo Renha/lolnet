@@ -23,6 +23,6 @@ func main() {
 	doc := doctor.NewDoctor()
 	cleanBlood, err := doc.Diagnose(blood)
 	isOk(err)
-	recipient := lolout.NewStdOut(true)
+	recipient := lolout.NewStdOut(false)
 	isOk(recipient.Add(cleanBlood))
 }
