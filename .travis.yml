@@ -1,7 +1,16 @@
 language: go
 
+sudo: false
+
+git:
+  depth: 1
+
+before_install:
+  - go get github.com/mattn/goveralls
+
 go:
   - "1.x"
-  - "1.8"
-  - "1.10.x"
-  - master
+
+script:
+  - go test -v -covermode=count -coverprofile=coverage.out ./...
+  - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci
