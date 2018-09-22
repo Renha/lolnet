@@ -5,6 +5,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/lexfrei/lolnet.svg)](https://github.com/lexfrei/lolnet/issues)
 [![GitHub license](https://img.shields.io/github/license/lexfrei/lolnet.svg)](https://github.com/lexfrei/lolnet/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Flexfrei%2Flolnet.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Flexfrei%2Flolnet?ref=badge_shield)
+[![Coverage Status](https://coveralls.io/repos/github/lexfrei/lolnet/badge.svg?branch=master)](https://coveralls.io/github/lexfrei/lolnet?branch=master)
+
 
 ЛОЛ, нет. Программа для реорганизации и форматирования строк.
 
