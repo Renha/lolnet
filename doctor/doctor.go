@@ -74,17 +74,17 @@ func unique(stringSlice []string) []string {
 	return list
 }
 
-type IPs []net.IP
+type ips []net.IP
 
-func (ips IPs) Len() int {
+func (ips ips) Len() int {
 	return len(ips)
 }
 
-func (ips IPs) Swap(i, j int) {
+func (ips ips) Swap(i, j int) {
 	ips[i], ips[j] = ips[j], ips[i]
 }
 
-func (ips IPs) Less(i, j int) bool {
+func (ips ips) Less(i, j int) bool {
 	if len(ips[i]) != len(ips[j]) {
 		return len(ips[i]) < len(ips[j])
 	}
@@ -97,7 +97,7 @@ func (ips IPs) Less(i, j int) bool {
 }
 
 func (doctor) Diagnose(blood *string) (*lolnet.Blood, error) {
-	var cleanIPs IPs
+	var cleanIPs ips
 	rawNets := unique(reNet.FindAllString(*blood, -1))
 
 	var networks nets
