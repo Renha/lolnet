@@ -5,12 +5,25 @@ sudo: false
 git:
   depth: 1
 
-before_install:
-  - go get github.com/mattn/goveralls
-
 go:
   - "1.x"
-
-script:
-  - go test -v -covermode=count -coverprofile=coverage.out ./...
-  - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci
+jobs:
+  include:
+    - stage: build
+      script: go build ./...
+    - stage: test
+      script:
+        - go get github.com/mattn/goveralls
+        - go test -v -covermode=count -coverprofile=coverage.out ./...
+        - $GOPATH/bin/goveralls -coverprofile=coverage.out -service=travis-ci
+    - stage: docker build
+      script:
+        - docker build --rm -t "${DOCKER_USERNAME}/lolnet:latest" -t "${DOCKER_USERNAME}/lolnet:git$(git rev-parse --short HEAD)" .
+    - stage: docker push
+      if: branch = master
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t "lexfrei/lolnet:latest" -t "lexfrei/lolnet:git$(git rev-parse --short HEAD)" .
+        - docker push "${DOCKER_USERNAME}/lolnet:latest"
+        - docker push "${DOCKER_USERNAME}/lolnet:git$(git rev-parse --short HEAD)"
+        
