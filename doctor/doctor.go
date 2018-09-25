@@ -1,6 +1,7 @@
 package doctor
 
 import (
+	"bytes"
 	"net"
 	"regexp"
 	"sort"
@@ -39,20 +40,24 @@ func (nets nets) Swap(i, j int) {
 }
 
 func (nets nets) Less(i, j int) bool {
-	if len(nets[i].Mask) != len(nets[j].Mask) {
-		return len(nets[i].Mask) < len(nets[j].Mask)
-	} else {
-		for octNum := 0; octNum < len(nets[i].Mask); octNum++ {
-			if nets[i].Mask[octNum] != nets[j].Mask[octNum] {
-				return nets[i].Mask[octNum] < nets[j].Mask[octNum]
-			}
-		}
-		for octNum := 0; octNum < len(nets[i].IP); octNum++ {
-			if nets[i].IP[octNum] != nets[j].IP[octNum] {
-				return nets[i].IP[octNum] < nets[j].IP[octNum]
-			}
-		}
+	// ipv4 before ipv6
+	if len(nets[i].IP) < len(nets[j].IP) {
+		return true
 	}
+
+	// Largest mask first
+	if bytes.Compare(nets[i].Mask, nets[j].Mask) < 0 {
+		return true
+	}
+	if bytes.Compare(nets[i].Mask, nets[j].Mask) > 0 {
+		return false
+	}
+
+	// Smallest ip first
+	if bytes.Compare(nets[i].IP, nets[j].IP) < 0 {
+		return true
+	}
+
 	return false
 }
 
@@ -85,15 +90,7 @@ func (ips ips) Swap(i, j int) {
 }
 
 func (ips ips) Less(i, j int) bool {
-	if len(ips[i]) != len(ips[j]) {
-		return len(ips[i]) < len(ips[j])
-	}
-	for octNum := 0; octNum < len(ips[i]); octNum++ {
-		if ips[i][octNum] != ips[j][octNum] {
-			return ips[i][octNum] < ips[j][octNum]
-		}
-	}
-	return false
+	return bytes.Compare(ips[i].To16(), ips[j].To16()) < 0
 }
 
 func (doctor) Diagnose(blood *string) (*lolnet.Blood, error) {
