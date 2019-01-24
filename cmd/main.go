@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/lexfrei/lolnet/doctor"
-	"github.com/lexfrei/lolnet/donor/web"
-	"github.com/lexfrei/lolnet/recipient/stdout"
+	webdonor "github.com/lexfrei/lolnet/donor/web"
+	lolout "github.com/lexfrei/lolnet/recipient/stdout"
 )
 
 func isOk(err error) {
@@ -23,6 +23,6 @@ func main() {
 	doc := doctor.NewDoctor()
 	cleanBlood, err := doc.Diagnose(blood)
 	isOk(err)
-	recipient := lolout.NewStdOut(false)
+	recipient := lolout.NewStdOut(true)
 	isOk(recipient.Add(cleanBlood))
 }
