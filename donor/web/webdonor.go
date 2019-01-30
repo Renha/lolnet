@@ -3,9 +3,9 @@ package webdonor
 import (
 	"errors"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"net/url"
+	"os"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/lexfrei/lolnet"
@@ -16,12 +16,6 @@ var _ lolnet.Donor = &webDonor{}
 type webDonor struct {
 	client http.Client
 	url    url.URL
-}
-
-type ips []net.IP
-
-type config struct {
-	webLink string `required:"true"`
 }
 
 // NewWebDonor gives you github donor object
@@ -43,7 +37,11 @@ func (wd webDonor) Get() (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if resp.Body.Close() != nil {
+			os.Exit(3)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, errors.New("Can't get list from GitHub")

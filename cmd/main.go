@@ -6,8 +6,8 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/lexfrei/lolnet"
 	"github.com/lexfrei/lolnet/doctor"
-	"github.com/lexfrei/lolnet/donor/web"
-	"github.com/lexfrei/lolnet/recipient/stdout"
+	webdonor "github.com/lexfrei/lolnet/donor/web"
+	lolout "github.com/lexfrei/lolnet/recipient/stdout"
 )
 
 func isOk(err error) {

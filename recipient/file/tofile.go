@@ -29,7 +29,12 @@ func (tf tofile) Add(bl *lolnet.Blood) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		if f.Close() != nil {
+			os.Exit(3)
+		}
+	}()
+
 	var out string
 	for _, i := range bl.IPs {
 		out += fmt.Sprintf("%s\n", i)
@@ -38,10 +43,8 @@ func (tf tofile) Add(bl *lolnet.Blood) error {
 		out += fmt.Sprintf("%s\n", o.String())
 	}
 	_, err = f.Write([]byte(out))
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
 
 func (tf tofile) Update(bl *lolnet.Blood) error {
